@@ -1,0 +1,309 @@
+import React, { useState, useEffect } from 'react';
+import { Menu, X, ChevronLeft, ChevronRight, Type, Moon, Sun, BookOpen } from 'lucide-react';
+
+// --- DỮ LIỆU SÁCH ---
+// Thầy Chuyền có thể dễ dàng hướng dẫn học sinh thêm các chương mới bằng cách copy cấu trúc object này.
+// Để tối ưu hiệu suất hiển thị trên web, em đã trích xuất 4 chương/phần đầu tiên làm mẫu.
+const bookData = [
+  {
+    id: 1,
+    title: "Lời giới thiệu",
+    content: `Tôi hay chia sẻ trong các chương trình nói chuyện về sách và văn hóa đọc rằng người đọc sách có thể không thành công nhưng người thành công thường đọc sách. Kinh nghiệm làm việc tại và với nhiều doanh nghiệp, tập đoàn khác nhau trên khắp thế giới chỉ cho tôi thấy rằng những đúc kết được viết trong những cuốn sách là vô cùng quý giá. Nhiều nhà lãnh đạo đã áp dụng những công thức của những doanh nhân đi trước hay học những ý hay từ những tác giả hay nhân vật trong sách để ứng dụng vào tổ chức của mình và đã rất thành công.
+
+    Chủ tịch HĐQT kiêm TGĐ Công ty CP Sách Thái Hà`
+  },
+  {
+    id: 2,
+    title: "Hành trình đọc sách",
+    content: `Trước đây, cuộc sống cũng như công việc của tôi bị chi phối khá nhiều từ những ý tưởng bất chợt. Những cuốn sách chưa và đang đọc xếp chồng chất ở các góc nhà. Những tờ báo, tạp chí nằm la liệt trên sàn, chờ đợi vô vọng để được ai đó ngó ngàng tới. Niềm ham thích và niềm vui đọc sách dù lớn đến đâu cũng bị cản trở bởi quỹ thời gian quá eo hẹp. Ngoài ra, phải thú nhận rằng khi nhìn chính giá sách của mình, ngoài một vài ý nhỏ, tôi không thể kể lại những gì tôi đã đọc trong các cuốn sách đó, kể cả khi tôi đã dành 20, 30 tiếng đồng hồ hay thậm chí còn nhiều hơn để đọc chúng. Dần dần tôi nhận ra rằng, chỉ có việc cải thiện kĩ năng đọc mới giúp tôi giải quyết được vấn đề của mình. Khi cải thiện được kĩ năng đọc, tôi đã giải quyết được đống sách chổng chất kia.
+
+Kể từ đó đã có rất nhiều thay đổi diễn ra. Khoảng thời gian trước kia chỉ đủ để dành cho một cuốn sách thì giờ đây tôi đã có thể đọc được sáu cuốn, thậm chí còn nhiều hơn. Thay vì chỉ dành thời gian cho một cuốn sách như trước đây, bây giờ tôi đọc sáu, thậm chí nhiều sách hơn. Điều đó không chỉ giúp tôi nâng cao đáng kể tốc độ đọc mà còn tạo cho tôi một động lực mạnh mẽ. Có một sự khác biệt rõ rệt giữa việc đọc đúng cách cuốn sách từ đầu đến cuối với việc đọc một cuốn sách liên tục bị ngắt quãng. Nếu đọc ngắt quãng, chúng ta luôn phải cố gắng nhập tâm lại từ đầu khi đọc tiếp. Sự khác biệt này cũng tương tự như việc thay đổi từ việc bò sang đi trong quá trình vận động của một em bé. Trong việc đọc sách, trường học chỉ dạy chúng ta cách "bò". Kỹ năng "đi" tự bản thân chúng ta phải trau dồi. 
+
+Vì muốn áp dụng những kĩ năng đọc mới vào việc chuẩn bị cho hai kì thi luật quốc gia của mình, nên bên cạnh việc chú ý vào tốc độ đọc tôi cũng rất coi trọng vấn đề hiểu và ghi nhớ. Và rồi sự cố gắng của tôi đã được đền đáp xứng đáng bằng kết quả có thể gọi là rất tốt, dù rằng tôi đã không phải đầu tư, tiêu tốn nhiều thời gian. Điều này giúp trấn an những người có tư tưởng lo ngại rằng, khóa học luyện đọc này chỉ tập trung đến tốc độ đọc, xem nhẹ kĩ năng đọc hiểu và ghi nhớ.
+
+Thực tế này chính là nguyên nhân tại sao tôi đặt tiêu đề cho cuốn sách này là "Đọc sách siêu tốc". Các thuật ngữ như "Tốc độ đọc" theo tôi chưa mang đầy đủ ý nghĩa. Bất cứ ai cũng có thể đọc nhanh. Nhưng chỉ có những người có kỹ năng đọc tốt mới có thể hiểu cuốn sách và áp dụng những gì họ đọc được vào cuộc sống thực tế. Trùng hợp thay, việc đẩy nhanh tốc độ đọc cũng là một trong những phương pháp để tăng cường khả năng đọc hiểu. Trong quá trình đó, người ta không đọc những từ ngữ riêng lẻ, không mang lại nội dung mà bắt đầu đọc các đơn vị có ý nghĩa. Các bạn sẽ khắc phục thói quen đọc từng từ như cách mà con vẹt thường bắt chước và các bạn cũng sẽ tin tưởng hơn vào kênh thị giác của mình.
+
+"Bình mới rượu cũ" - câu nói này tôi đã nghe từ một hay nhiều nhà phê bình khác. "Điều đó chắc chắn đã từng được nhắc tới". Các bạn có thể chắc chắn rằng, mỗi suy nghĩ trong cuốn sách này đã từng được đề cập tới và cũng có thể đã từng được viết ra, mặc dù không nhất thiết tất cả những nội dung đó còn được giữ lại đến thời đại của chúng ta ngày nay. Tất cả những nguyên tắc cơ bản hữu hiệu cho việc học và đọc thành công đều đã được nhắc đến trong các tác phẩm của Aristotle hay là Cicero. Theo tôi, một vài tác phẩm đương đại không chứa đựng nhiều nội dung hữu ích và có giá trị thực tiễn như những tác phẩm Hy Lạp, La Tinh cổ này.
+
+Trong việc truyền đạt các kĩ năng đọc, chất lượng của "bình mới" chứa những thông điệp "rượu cũ" mang tính quyết định. Do đó, việc cung cấp một tên gọi riêng cho từng cách tiếp cận là hoàn toàn hợp lý để có thể phân biệt được ý tưởng của tác giả. Tôi sử dụng khái niệm "Đọc trực quan" và "Thẻ trực quan" nhằm nhấn mạnh tầm quan trọng của các kênh hình ảnh.
+
+Bây giờ chúng ta bắt tay vào cuộc hành trình tìm hiểu những kỹ thuật. Bạn có thể so sánh việc học kỹ thuật đọc sách hiệu quả với việc leo núi. Mục tiêu của chúng ta là chinh phục được đỉnh núi. Trước khi leo lên đỉnh núi, đầu tiên chúng ta sẽ phải làm công tác chuẩn bị. Cần phải xác định vị trí hiện tại của chúng ta trên bản đồ đọc và hãy xem các nhà leo núi đã thực hiện hành trình leo núi như thế nào. Ngoài ra, chúng ta cũng cần nhìn lại con đường ta đã đi qua. Cuối cùng, chúng ta đã sẵn sàng để leo lên đỉnh. Do đó, cả tốc độ đọc, độ tập trung, khả năng đọc hiểu và cả khả năng ghi nhớ của bạn đều được cải thiện đáng kể. 
+
+Giờ chúng ta cùng bắt tay vào công tác chuẩn bị!`
+  },
+  {
+    id: 3,
+    title: "Chương 1: Chuẩn bị leo núi",
+    content: `Những câu hỏi bạn nên đặt ra:
+• Tôi đang ở cấp độ đọc nào?
+• Tôi có thể xác định khả năng hiểu văn bản của mình như thế nào?
+• Khi đọc, mắt nên chuyển động như thế nào?
+• Thói quen đọc sách cũ gây ra những vấn đề gì?
+• Những độc giả thực thụ đọc theo cách nào?
+
+I. Xác định vị trí
+
+Một tấm bản đồ sẽ không giúp ích được gì, khi chúng ta không biết mình đang ở đâu. Điều đó cũng tương tự như khi chúng ta luyện đọc. Trước khi bắt đầu leo núi, chúng ta phải xác định vị trí của mình.
+
+Hãy đọc văn bản dưới đây bằng tốc độ đọc mà các bạn vẫn thường áp dụng và cảm giác thoải mái nhất. Vì đây là một bài kiểm tra nên các bạn không nên đọc lướt quá nhanh, để chúng ta có thể thu được kết quả chính xác. Tốt nhất, các bạn nên dùng đồng hồ bấm giờ để đo thời gian mà các bạn đã dành cho đoạn văn bản nói trên.
+
+NHỮNG ƯU ĐIỂM CỦA VIỆC CHẠY BỘ (của Christian Grüning)
+
+Trong quá trình tiến hóa thành người, tổ tiên của chúng ta đã đúc kết một chân lý, đó là: "chạy cho cuộc sống". Loài người được sinh ra là để vận động. Thật vậy, tổ tiên của chúng ta nếu không chạy rong ruổi 8 tiếng đồng hồ để săn bò rừng, nuôi sống gia đình thì cũng phải chạy trốn thú dữ. Và con người hiện nay cũng không khác biệt là mấy. Theo tính toán, hằng ngày mỗi đứa trẻ chạy bộ 10 km cho tới khi chúng chịu ngồi yên ở trường.
+
+Tuy nhiên, người lớn chúng ta lại ngồi hàng giờ bên bàn làm việc và ép cơ thể gập thành một góc vuông không hề tự nhiên. Chắc chắn tư thế đó khiến cơ thể chúng ta hòa hợp một cách hài hòa với quang cảnh văn phòng. Tuy nhiên, người ta cần đến 100.000 năm để có thể khắc phục được những ảnh hưởng bị thay đổi. Bạn có thể đợi đến lúc đó không?
+
+Luyện tập chạy bền/đường trường (tên khoa học là: chạy hiếu khí) là một phương pháp hữu hiệu. Chạy bền là bài tập cường độ thấp, tức là, chạy không dùng hết sức nhưng cơ bắp vẫn sản sinh đủ lượng oxy cần thiết để đốt cháy mỡ. Chạy bền mang lại nhiều lợi ích cho cơ thể và tinh thần. Ngược với chạy bền là chạy nước rút (tên khoa học là: chạy yếm khí), có nghĩa là các bạn phải huy động toàn bộ sức lực của cơ thể, chạy với cường độ cao trong thời gian ngắn.
+
+Để có được những lợi ích mang tính lâu dài của việc chạy bộ, các bạn nên duy trì mỗi ngày 30 phút chạy bộ, nếu bạn thực hiện bài tập này ngay sau khi thức dậy sẽ đạt hiệu quả cao nhất. Ngoài ra, khi dạ dày không có carbohydrate là thời điểm quá trình kết nối các enzim đốt cháy chất béo diễn ra tốt nhất. 
+
+Chạy bộ giúp bạn thông minh hơn: Bác sĩ Michael Spitzbart cho biết: Chạy chậm cải thiện máu lưu thông trong não, nâng mức oxy trong não lên đến 10 lần...
+
+Chạy bộ giúp bạn thấy hạnh phúc hơn: Chạy bộ giúp cơ thể sản sinh hoóc môn thần kinh Endorphins thuốc phiện nội sinh. Hoóc môn này đóng vai trò như chất dẫn truyền sự hưng phấn, đưa cơ thể vào trạng thái thư giãn...
+
+Chạy bộ giúp bạn khỏe hơn: Chạy đúng cách giúp tăng cường hệ miễn dịch. Chỉ sau 30 phút chạy lượng tế bào sát thủ trong máu tăng 31%...
+
+Mỉm cười trong quá trình chạy vừa phải: Việc mỉm cười giúp cơ thể sản sinh thêm các hoóc môn tích cực và giảm thiểu căng thẳng.
+
+Khó khăn trong việc xác định mức độ hiểu văn bản: Rất khó để đánh giá xem thực sự mình đã hiểu được bao nhiêu phần trăm nếu không có công cụ đo lường chính xác.
+
+II. Vấn đề khó khăn từ những bước nhỏ
+
+Chúng ta đã xác định được vị trí của bạn ở đâu trên biểu đồ thể hiện khả năng đọc sách của bạn. Bạn cũng cần nắm rõ được mục tiêu và đỉnh cao nào bạn muốn đạt tới. Bạn có muốn tiến tới trở thành nhóm độc giả có thể ghi nhớ và hiểu được lượng thông tin lớn nhất trong khoảng thời gian ngắn nhất có thể.
+
+Để đạt được điều này, trước tiên bạn cần kiểm soát được chuyển động của đôi mắt khi đọc. Liệu bạn có thấy được mắt mình hoạt động đều đặn từ trái qua phải và ngược lại khi đọc sách hay bạn cảm nhận được hoạt động của đôi mắt không theo quy tắc đó?
+
+Hầu hết đối với phần lớn độc giả thì cách chuyển động mắt của họ trên các dòng chữ thường theo một cách như sau: Đôi mắt nhìn vào một từ, tiếp nhận từ đó và tiếp tục chuyển sang từ tiếp theo. Hình thức đọc này sẽ khiến bạn căng thẳng ngay từ khi bắt đầu đến khi đọc xong văn bản.
+
+Cách "đọc từng từ" này thực ra sẽ đem lại cho bạn một số vấn đề bất lợi. Điều đầu tiên là nó hạn chế khá nhiều tốc độ đọc của bạn. Những nghiên cứu trong phòng thí nghiệm về khả năng đọc sách đã chỉ ra rằng thời gian tập trung ánh mắt, tức là khoảng thời gian mắt bạn nhìn vào một từ trung bình mất khoảng 1/4 giây. Cứ 1/4 giây thì chúng ta đọc được một từ. Tức là, trong một giây chúng ta đọc được 4 từ và trong một phút chúng ta có thể đọc được 240 từ. 
+
+Việc khả năng đọc hay tốc độ đọc bị ảnh hưởng bởi cách đọc từng từ từng chữ thực ra vẫn chưa phải là vấn đề chính. Nghiêm trọng hơn là ở chỗ khả năng hiểu và cảm nhận nội dung văn bản của bạn trong quá trình đọc bị giảm đi. Ví dụ: từ đầu tiên mắt chúng ta nhìn thấy là từ "một". Từ này khi đứng một mình thì không có ý nghĩa gì. Bây giờ mắt bạn sẽ chuyển đến từ tiếp theo và não của bạn nhận dạng từ "nhỏ". Lại tiếp tục không hiểu được ý nghĩa là gì. 
+
+Nguyên nhân của sự mất tập trung
+
+Khoa học đã chứng minh rằng trong một phút một người có thể nghĩ được ít nhất là 600 từ. Tuy nhiên, tốc độ nói trung bình 150 từ trong một phút lại là rất chậm. Theo các nghiên cứu cho thấy, đối với tốc độ đọc thông thường là 200 từ 1 phút thì chúng ta chỉ dùng đến khoảng 40 bit mỗi giây (trên tổng số 126 bit nhận thức). Như thế khoảng 80 bit còn lại bị rơi vào sự mất tập trung. Bạn có đủ lý do để bị rơi vào trạng thái độc thoại trong quá trình đọc.
+
+Hai bán cầu não
+
+Não của chúng ta được cấu thành giống hệt như hạt quả óc chó. Bán cầu não trái thực hiện nhiệm vụ phân tích. Nó sẽ hoạt động tốt trong khi xử lý các trình tự tuyến tính. Ngôn ngữ cũng chiếm một vị trí nhất định ở nửa bên trái của não bộ.
+
+Ngược lại đối với bán cầu não phải thì thời gian, sự tuyến tính và ngôn ngữ không đóng vai trò gì cả. Bán cầu não phải chịu trách nhiệm về quá trình tư duy theo không gian. Trí tưởng tượng, sự sáng tạo và hình ảnh sẽ là do bán cầu não phải chi phối. Bức tranh tổng thể sẽ là yếu tố quyết định chứ không phải từng chi tiết riêng lẻ.
+
+Để học và đọc một cách tối ưu nhất, chúng ta cần kết hợp được các kỹ năng của cả hai bán cầu não.
+
+III. Hướng đến mục tiêu chinh phục đỉnh cao
+
+Phân loại năng lực vô thức
+
+Bất kỳ quá trình học hỏi nào cũng trải qua 4 giai đoạn cơ bản. Việc luyện đọc sách siêu tốc cũng không ngoại lệ:
+1. Vô thức không có năng lực (Unconscious Incompetence): Bạn không hề biết rằng mình đang thiếu hụt kỹ năng.
+2. Có ý thức không có năng lực (Conscious Incompetence): Bạn nhận ra mình đọc chậm và chưa hiệu quả, nhưng chưa biết cách sửa.
+3. Có ý thức có năng lực (Conscious Competence): Bạn bắt đầu áp dụng các kỹ thuật đọc mới, nhưng cần sự tập trung cao độ và nỗ lực có ý thức.
+4. Vô thức có năng lực (Unconscious Competence): Kỹ thuật đọc mới đã trở thành bản năng. Bạn áp dụng chúng một cách tự nhiên mà không cần suy nghĩ. Đây chính là mục tiêu cuối cùng của chúng ta.
+
+IV. Nhìn lại quá trình đọc ban đầu
+
+Một số nội dung chính bạn cần xem xét lại là cách chúng ta được dạy đọc ở trường học. Ban đầu, chúng ta đánh vần từng chữ cái. Sau đó, chúng ta ghép các chữ cái thành từ và đọc to thành tiếng. Bước tiếp theo là đọc nhẩm trong đầu (đọc thầm).
+
+Đáng buồn là hệ thống giáo dục thường dừng lại ở bước này. Chúng ta bị mắc kẹt ở thói quen "đọc thầm từng từ" trong suốt quãng đời còn lại. Đây chính là nguyên nhân kìm hãm tốc độ và khả năng đọc hiểu của hầu hết người trưởng thành. Để vượt qua rào cản này, chúng ta cần thay đổi tận gốc thói quen đọc đã được hình thành từ khi còn nhỏ.`
+  }
+];
+
+// --- APP COMPONENT ---
+export default function ReadingApp() {
+  // State quản lý ứng dụng
+  const [activeChapterIndex, setActiveChapterIndex] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isSettingsOpen, setIsSettingsOpen] = useState(false);
+  
+  // Các thiết lập của người dùng
+  const [theme, setTheme] = useState('light'); // 'light', 'dark', 'sepia'
+  const [fontSize, setFontSize] = useState('medium'); // 'small', 'medium', 'large', 'xlarge'
+
+  // Đóng menu khi click ra ngoài hoặc chọn chương
+  const handleChapterSelect = (index) => {
+    setActiveChapterIndex(index);
+    setIsMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
+
+  // Cấu hình Theme (Giao diện)
+  const themeStyles = {
+    light: { bg: 'bg-gray-50', text: 'text-gray-900', card: 'bg-white', border: 'border-gray-200', topbar: 'bg-white/90', primary: 'text-blue-600' },
+    dark: { bg: 'bg-gray-900', text: 'text-gray-100', card: 'bg-gray-800', border: 'border-gray-700', topbar: 'bg-gray-900/90', primary: 'text-blue-400' },
+    sepia: { bg: 'bg-[#f4ecd8]', text: 'text-[#5b4636]', card: 'bg-[#fdf6e3]', border: 'border-[#e0d6c0]', topbar: 'bg-[#f4ecd8]/90', primary: 'text-[#8b6b53]' }
+  };
+
+  const currentTheme = themeStyles[theme];
+
+  // Cấu hình Font Size (Cỡ chữ)
+  const fontStyles = {
+    small: 'text-base md:text-lg',
+    medium: 'text-lg md:text-xl',
+    large: 'text-xl md:text-2xl',
+    xlarge: 'text-2xl md:text-3xl'
+  };
+
+  const currentFont = fontStyles[fontSize];
+  const activeChapter = bookData[activeChapterIndex];
+
+  // Chuyển đổi văn bản thành các đoạn văn <p>
+  const formatContent = (text) => {
+    return text.split('\n\n').map((paragraph, index) => {
+      // Nhận diện các tiêu đề nội bộ (chữ IN HOA hoặc bắt đầu bằng số/số la mã)
+      const isSubHeading = /^[IVX]+[.]|[0-9]+[.]|[A-ZÀ-Ỹ\s]+$/.test(paragraph.trim()) && paragraph.length < 100;
+      
+      if (isSubHeading) {
+        return <h3 key={index} className="text-xl md:text-2xl font-bold mt-8 mb-4">{paragraph}</h3>;
+      }
+      
+      return (
+        <p key={index} className="mb-6 leading-relaxed text-justify">
+          {paragraph}
+        </p>
+      );
+    });
+  };
+
+  return (
+    <div className={`min-h-screen transition-colors duration-300 font-sans ${currentTheme.bg} ${currentTheme.text}`}>
+      
+      {/* HEADER / TOP NAVIGATION */}
+      <header className={`fixed top-0 left-0 right-0 z-40 backdrop-blur-md ${currentTheme.topbar} border-b ${currentTheme.border} transition-colors duration-300`}>
+        <div className="max-w-4xl mx-auto px-4 h-16 flex items-center justify-between">
+          <div className="flex items-center space-x-3">
+            <button 
+              onClick={() => setIsMenuOpen(true)}
+              className={`p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors`}
+              aria-label="Mở danh mục"
+            >
+              <Menu size={24} />
+            </button>
+            <h1 className="font-bold text-lg md:text-xl truncate max-w-[200px] md:max-w-md">
+              Đọc Sách Siêu Tốc
+            </h1>
+          </div>
+          
+          <button 
+            onClick={() => setIsSettingsOpen(!isSettingsOpen)}
+            className={`p-2 rounded-lg hover:bg-black/5 dark:hover:bg-white/10 transition-colors relative`}
+            aria-label="Tùy chỉnh đọc"
+          >
+            <Type size={22} />
+          </button>
+        </div>
+
+        {/* Cửa sổ Tùy chỉnh (Settings Dropdown) */}
+        {isSettingsOpen && (
+          <div className={`absolute top-full right-4 mt-2 p-4 rounded-xl shadow-xl ${currentTheme.card} ${currentTheme.border} border w-64 z-50`}>
+            <div className="mb-4">
+              <p className="text-sm font-semibold mb-2 opacity-70">Giao diện đọc</p>
+              <div className="flex space-x-2">
+                <button onClick={() => setTheme('light')} className={`flex-1 py-2 rounded border ${theme === 'light' ? 'border-blue-500 ring-2 ring-blue-200' : currentTheme.border} bg-white text-black`}>Sáng</button>
+                <button onClick={() => setTheme('sepia')} className={`flex-1 py-2 rounded border ${theme === 'sepia' ? 'border-amber-600 ring-2 ring-amber-200' : currentTheme.border} bg-[#fdf6e3] text-[#5b4636]`}>Vàng</button>
+                <button onClick={() => setTheme('dark')} className={`flex-1 py-2 rounded border ${theme === 'dark' ? 'border-blue-400 ring-2 ring-blue-900' : currentTheme.border} bg-gray-800 text-white`}>Tối</button>
+              </div>
+            </div>
+            <div>
+              <p className="text-sm font-semibold mb-2 opacity-70">Cỡ chữ</p>
+              <div className="flex items-center justify-between bg-black/5 dark:bg-white/5 rounded-lg p-1">
+                <button onClick={() => setFontSize('small')} className={`p-2 px-3 rounded ${fontSize === 'small' ? 'bg-white shadow dark:bg-gray-700' : ''}`}>A</button>
+                <button onClick={() => setFontSize('medium')} className={`p-2 px-3 rounded text-lg ${fontSize === 'medium' ? 'bg-white shadow dark:bg-gray-700' : ''}`}>A</button>
+                <button onClick={() => setFontSize('large')} className={`p-2 px-3 rounded text-xl ${fontSize === 'large' ? 'bg-white shadow dark:bg-gray-700' : ''}`}>A</button>
+                <button onClick={() => setFontSize('xlarge')} className={`p-2 px-3 rounded text-2xl ${fontSize === 'xlarge' ? 'bg-white shadow dark:bg-gray-700' : ''}`}>A</button>
+              </div>
+            </div>
+          </div>
+        )}
+      </header>
+
+      {/* MENU BÊN TRÁI (DRAWER) */}
+      <div className={`fixed inset-0 z-50 transition-opacity duration-300 ${isMenuOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
+        {/* Lớp mờ (Overlay) */}
+        <div 
+          className="absolute inset-0 bg-black/50 backdrop-blur-sm"
+          onClick={() => setIsMenuOpen(false)}
+        ></div>
+        
+        {/* Sidebar */}
+        <div className={`absolute top-0 left-0 bottom-0 w-80 max-w-[80vw] ${currentTheme.card} shadow-2xl transition-transform duration-300 transform ${isMenuOpen ? 'translate-x-0' : '-translate-x-full'} overflow-y-auto`}>
+          <div className={`p-4 border-b ${currentTheme.border} flex justify-between items-center sticky top-0 ${currentTheme.card}`}>
+            <h2 className="font-bold text-lg flex items-center"><BookOpen className="mr-2" size={20} /> Mục lục</h2>
+            <button onClick={() => setIsMenuOpen(false)} className="p-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10">
+              <X size={20} />
+            </button>
+          </div>
+          <ul className="p-2">
+            {bookData.map((chapter, index) => (
+              <li key={chapter.id}>
+                <button
+                  onClick={() => handleChapterSelect(index)}
+                  className={`w-full text-left px-4 py-4 rounded-xl mb-1 transition-colors flex items-center space-x-3
+                    ${activeChapterIndex === index 
+                      ? `${theme === 'dark' ? 'bg-blue-900/40 text-blue-300' : theme === 'sepia' ? 'bg-amber-700/10 text-amber-800' : 'bg-blue-50 text-blue-700'} font-semibold` 
+                      : 'hover:bg-black/5 dark:hover:bg-white/5 opacity-80 hover:opacity-100'
+                    }
+                  `}
+                >
+                  <span className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center text-sm ${activeChapterIndex === index ? 'bg-current opacity-20' : 'bg-black/5 dark:bg-white/10'}`}>
+                    {index + 1}
+                  </span>
+                  <span className="leading-snug">{chapter.title}</span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </div>
+
+      {/* NỘI DUNG ĐỌC CHÍNH */}
+      <main className="pt-24 pb-32 px-4 md:px-8 max-w-3xl mx-auto min-h-screen">
+        <article className="transition-all duration-300">
+          <h1 className="text-3xl md:text-4xl font-extrabold mb-8 pb-6 border-b-2 border-current border-opacity-10 leading-tight">
+            {activeChapter.title}
+          </h1>
+          
+          <div className={`${currentFont} transition-all duration-300`}>
+            {formatContent(activeChapter.content)}
+          </div>
+        </article>
+      </main>
+
+      {/* THANH ĐIỀU HƯỚNG DƯỚI CÙNG (BOTTOM NAVIGATION) */}
+      <footer className={`fixed bottom-0 left-0 right-0 p-4 backdrop-blur-md ${currentTheme.topbar} border-t ${currentTheme.border} z-30`}>
+        <div className="max-w-3xl mx-auto flex justify-between items-center gap-4">
+          <button 
+            onClick={() => handleChapterSelect(activeChapterIndex - 1)}
+            disabled={activeChapterIndex === 0}
+            className={`flex-1 flex items-center justify-center py-3 px-4 rounded-xl font-medium transition-all
+              ${activeChapterIndex === 0 
+                ? 'opacity-30 cursor-not-allowed bg-black/5 dark:bg-white/5' 
+                : `${currentTheme.card} shadow-sm border ${currentTheme.border} hover:shadow-md active:scale-95`
+              }
+            `}
+          >
+            <ChevronLeft size={20} className="mr-1" /> Trước
+          </button>
+          
+          <span className="text-sm font-medium opacity-60 w-24 text-center">
+            {activeChapterIndex + 1} / {bookData.length}
+          </span>
+          
+          <button 
+            onClick={() => handleChapterSelect(activeChapterIndex + 1)}
+            disabled={activeChapterIndex === bookData.length - 1}
+            className={`flex-1 flex items-center justify-center py-3 px-4 rounded-xl font-medium transition-all
+              ${activeChapterIndex === bookData.length - 1 
+                ? 'opacity-30 cursor-not-allowed bg-black/5 dark:bg-white/5' 
+                : `${theme === 'dark' ? 'bg-blue-600 text-white' : theme === 'sepia' ? 'bg-[#8b6b53] text-white' : 'bg-blue-600 text-white'} shadow-sm hover:shadow-md active:scale-95 border-transparent`
+              }
+            `}
+          >
+            Tiếp <ChevronRight size={20} className="ml-1" />
+          </button>
+        </div>
+      </footer>
+
+    </div>
+  );
+}
